@@ -1,61 +1,66 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const FooterSection = styled.footer`
-  min-height: 100vh;
+const FooterWrapper = styled.div`
+  width: 100%;
+  position: relative;
+`;
+
+const HudFooter = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 4rem 2rem;
+  justify-content: space-between;
+  padding: 0 20px;
+  font-family: 'Source Code Pro', monospace;
+  color: #00ff00;
+  font-size: 0.8rem;
+  border-top: 1px solid rgba(255, 215, 0, 0.1);
+  z-index: 1000;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
 `;
 
-const Title = styled.h2`
-  font-family: 'Creepster', cursive;
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  text-align: center;
-  color: #fff;
-  margin-bottom: 2rem;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-`;
-
-const Content = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-  font-size: clamp(1.2rem, 3vw, 1.8rem);
-  line-height: 1.6;
-`;
-
-const SocialLinks = styled.div`
+const HudElement = styled.div`
   display: flex;
-  gap: 2rem;
-  margin-top: 2rem;
-  
-  a {
-    color: #fff;
-    text-decoration: none;
-    font-size: clamp(1rem, 2vw, 1.4rem);
-    transition: color 0.3s ease;
-    
-    &:hover {
-      color: #9d4edd;
-    }
+  align-items: center;
+  gap: 5px;
+
+  &:before {
+    content: '[';
+    color: #666;
   }
+
+  &:after {
+    content: ']';
+    color: #666;
+  }
+`;
+
+const HudGroup = styled.div`
+  display: flex;
+  gap: 15px;
 `;
 
 export const Footer: React.FC = () => {
   return (
-    <FooterSection>
-      <Title>Join the Community</Title>
-      <Content>
-        <p>Get schwifty with us on social media!</p>
-        <SocialLinks>
-          <a href="#twitter">Twitter</a>
-          <a href="#telegram">Telegram</a>
-          <a href="#discord">Discord</a>
-        </SocialLinks>
-      </Content>
-    </FooterSection>
+    <FooterWrapper>
+      <HudFooter>
+        <HudGroup>
+          <HudElement>squanchcoin-client</HudElement>
+          <HudElement>status:active</HudElement>
+        </HudGroup>
+        <HudGroup>
+          <HudElement>mem:optimal</HudElement>
+          <HudElement>net:connected</HudElement>
+          <HudElement>env:production</HudElement>
+        </HudGroup>
+      </HudFooter>
+    </FooterWrapper>
   );
 }; 

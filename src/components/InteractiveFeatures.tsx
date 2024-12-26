@@ -20,14 +20,14 @@ const noiseAnimation = keyframes`
 const Section = styled.section`
   background-color: black;
   position: relative;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 90px);
   margin: 0;
   padding: 0;
   overflow: hidden;
 
   @media (max-width: 768px) {
     height: auto;
-    min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 90px);
   }
 `;
 
@@ -257,7 +257,7 @@ const ArtifactDisplay = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: center;
   overflow-y: auto;
   text-align: left;
   position: relative;
@@ -285,6 +285,7 @@ const ArtifactImage = styled.img`
   display: block;
   border-radius: 10px;
   border: 2px solid rgba(128, 0, 255, 0.3);
+  object-fit: contain;
 `;
 
 const ArtifactText = styled.div`
@@ -501,22 +502,7 @@ const SQUANCH_ASCII = `
 <span style="color: ${TerminalColors.error}">  ░╚═══██╗╚██████╔╝██║░░░██║██╔══██║██║╚████║██║░░██╗██╔══██║</span>
 <span style="color: ${TerminalColors.prompt}">  ██████╔╝░╚═██╔═╝░╚██████╔╝██║░░██║██║░╚███║╚█████╔╝██║░░██║</span>
 <span style="color: ${TerminalColors.path}">  ╚═════╝░░░░╚═╝░░░░╚═════╝░╚═╝░░╚═╝╚═╝░░╚══╝░╚════╝░╚═╝░░╚═╝</span>
-
-<span style="color: ${TerminalColors.command}">  ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄   ▄▄ ▄▄▄▄▄▄ ▄▄    ▄ ▄▄▄▄▄▄▄ ▄▄   ▄▄ </span>
-<span style="color: ${TerminalColors.info}">  █       █       █  █ █  █      █  █  █ █       █  █ █  █</span>
-<span style="color: ${TerminalColors.warning}">  █  ▄▄▄▄▄█   ▄   █  █▄█  █  ▄   █   █▄█ █       █  █▄█  █</span>
-<span style="color: ${TerminalColors.error}">  █ █▄▄▄▄▄█  █ █  █       █ █▄█  █       █     ▄▄█       █</span>
-<span style="color: ${TerminalColors.success}">  █▄▄▄▄▄  █  █▄█  █   ▄   █      █  ▄    █    █  █   ▄   █</span>
-<span style="color: ${TerminalColors.prompt}">   ▄▄▄▄▄█ █       █  █ █  █  ▄   █ █ █   █    █▄▄█  █ █  █</span>
-<span style="color: ${TerminalColors.path}">  █▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█▄▄█ █▄▄█▄▄█ █▄▄█▄█  █▄▄█▄▄▄▄▄▄▄█▄▄█ █▄▄█</span>
-
-<span style="color: ${TerminalColors.error}">   @@@@@@   @@@@@@@    @@@  @@@   @@@@@@   @@@  @@@   @@@@@@@  @@@  @@@  </span>
-<span style="color: ${TerminalColors.warning}">  @@@@@@@   @@@@@@@@  @@@  @@@  @@@@@@@@  @@@@ @@@  @@@@@@@@  @@@  @@@  </span>
-<span style="color: ${TerminalColors.info}">  !@@       @@!  @@@  @@!  @@@  @@!  @@@  @@!@!@@@  !@@       @@!  @@@  </span>
-<span style="color: ${TerminalColors.success}">  !@!       !@!  @!@  !@!  @!@  !@!  @!@  !@!!@!@!  !@!       !@!  @!@  </span>
-<span style="color: ${TerminalColors.prompt}">  !!@@!!    @!@@!@!   @!@  !@!  @!@!@!@!  @!@ !!@!  !@!       @!@!@!@!  </span>
-<span style="color: ${TerminalColors.path}">   !!@!!!   !!@!!!    !@!  !!!  !!!@!!!!  !@!  !!!  !!!       !!!@!!!!  </span>
-</span>`;
+`;
 
 const SYSTEM_INFO = `
 <span style="color: ${TerminalColors.prompt}">quantum@RUBCO-INDUSTRIES</span>
@@ -558,6 +544,46 @@ const IndentedSection = styled.div<{ level: number }>`
   margin: 0.2rem 0;
 `;
 
+const mockArtifacts = [
+  {
+    prediction: "The Quantum Screwdriver 3000: A multi-dimensional tool that can unscrew reality itself. Perfect for home repairs across infinite timelines. Warning: May occasionally turn screws into tiny portals.",
+    survivalTip: "Never point the quantum end at your face. If reality starts unscrewing, remember: righty-tighty, lefty-loosey applies to dimensional stability.",
+    imageUrl: "/static.gif"
+  },
+  {
+    prediction: "The Interdimensional Cable Box Plus: Now with infinite channels and reality-bending commercials. Comes with a warranty valid in at least 5 dimensions.",
+    survivalTip: "If you start seeing commercials for your own future, change the channel immediately. Your timeline will thank you.",
+    imageUrl: "/static.gif"
+  }
+];
+
+const LoadingGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 10px 0;
+  font-family: 'Source Code Pro', monospace;
+  opacity: 0.8;
+`;
+
+const GridCell = styled.div`
+  padding: 4px 8px;
+  border: 1px solid ${TerminalColors.comment};
+  color: ${TerminalColors.command};
+  font-size: 0.9em;
+`;
+
+const LoadingIndicator = styled.span`
+  display: inline-block;
+  font-family: monospace;
+  margin-right: 4px;
+`;
+
+const BrailleLoader = styled.span`
+  letter-spacing: 2px;
+  opacity: 0.8;
+`;
+
 export const InteractiveFeatures: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -591,6 +617,7 @@ export const InteractiveFeatures: React.FC = () => {
     imageUrl: string;
   } | null>(null);
   const [initialPrompt, setInitialPrompt] = useState(true);
+  const [usingFallbackImage, setUsingFallbackImage] = useState(false);
 
   // Add auto-scroll functionality
   const terminalRef = useRef<HTMLDivElement>(null);
@@ -603,56 +630,63 @@ export const InteractiveFeatures: React.FC = () => {
 
   useEffect(() => {
     if (loading && currentStep < loadingSteps.length && sessionActive) {
-      // Main loading step
+      const stepDelay = 1500 + (currentStep * 200); // Gradually increase delay
+      
       const timer = setTimeout(() => {
         const coordinate = generateDimensionalCoordinate();
+        const brailleCount = Math.floor((currentStep + 1) * 2); // Increase braille chars as steps progress
+        const brailleLoader = '⠋'.repeat(brailleCount);
+        
         const stepText = currentStep === 1 
           ? `${loadingSteps[currentStep]} ${coordinate}`
           : loadingSteps[currentStep];
         
-        setLoadingProgress(prev => [...prev, `${stepText}...${(currentStep + 1) * 10}%`]);
+        setLoadingProgress(prev => [...prev, 
+          `${brailleLoader} ${stepText}...${(currentStep + 1) * 10}%`
+        ]);
+        
+        // Add grid data every 3 steps
+        if (currentStep % 3 === 0) {
+          setLoadingProgress(prev => [...prev,
+            `<div class="loading-grid">
+              <div>ADDR: 0x${generateRandomHex()}</div>
+              <div>MEM: ${Math.floor(Math.random() * 1024)}MB</div>
+              <div>CPU: ${Math.floor(Math.random() * 100)}%</div>
+              <div>QBits: ${Math.floor(Math.random() * 64)}</div>
+            </div>`
+          ]);
+        }
+        
         setCurrentStep(prev => prev + 1);
 
         if (currentStep === loadingSteps.length - 1) {
           generateArtifact();
         }
-      }, 1000);
+      }, stepDelay);
 
-      // Random hacking messages with errors
+      // Reduce error frequency significantly
       const hackingTimer = setInterval(() => {
-        if (!awaitingUserChoice) {  // Only show hacking messages if not waiting for user input
-          const shouldError = Math.random() < 0.3;
-          const shouldWarn = Math.random() < 0.2;
-          const shouldCriticalError = Math.random() < 0.1;
-
-          if (shouldCriticalError) {
-            setHackingOutput(prev => [
-              ...prev,
-              `<span style="color: ${TerminalColors.error}">[FATAL] ${errorMessages[Math.floor(Math.random() * errorMessages.length)]}</span>`,
-              `<span style="color: ${TerminalColors.warning}">[SYSTEM] Initiating emergency recovery sequence...</span>`,
-              `<span style="color: ${TerminalColors.info}">[RECOVERY] ${recoveryMessages[Math.floor(Math.random() * recoveryMessages.length)]}</span>`
-            ]);
-          } else if (shouldError) {
+        if (!awaitingUserChoice) {
+          const shouldError = Math.random() < 0.1; // Reduced from 0.3
+          const shouldWarn = Math.random() < 0.05; // Reduced from 0.2
+          
+          if (shouldError && hackingOutput.filter(msg => msg.includes('ERROR')).length < 3) {
             setHackingOutput(prev => [
               ...prev,
               `<span style="color: ${TerminalColors.error}">[ERROR] Memory corruption at 0x${generateRandomHex()}</span>`,
               `<span style="color: ${TerminalColors.warning}">[SYSTEM] Attempting memory reallocation...</span>`
             ]);
-          } else if (shouldWarn) {
-            setHackingOutput(prev => [
-              ...prev,
-              `<span style="color: ${TerminalColors.warning}">[WARNING] Unstable quantum signature detected in sector 0x${generateRandomHex()}</span>`
-            ]);
           } else {
             const randomMessage = hackingMessages[Math.floor(Math.random() * hackingMessages.length)];
             const path = generateRandomPath();
+            const brailleLoader = '⠋'.repeat(Math.floor(Math.random() * 5) + 1);
             setHackingOutput(prev => [
               ...prev,
-              `<span style="color: ${TerminalColors.command}">[${path}] ${randomMessage}</span>`
+              `<span style="color: ${TerminalColors.command}">[${path}] ${brailleLoader} ${randomMessage}</span>`
             ]);
           }
         }
-      }, 200);
+      }, 400); // Increased delay between messages
 
       return () => {
         clearTimeout(timer);
@@ -736,65 +770,50 @@ export const InteractiveFeatures: React.FC = () => {
     }
   }, [isGenerating]);
 
-  const makeOpenAIRequest = async (messages: Array<{ role: string; content: string }>, maxTokens: number) => {
-    const apiKey = config.openaiApiKey;
-    
-    if (!apiKey) {
-      throw new Error('OpenAI API key is not configured');
-    }
+  const startGeneration = async () => {
+    setSessionActive(true);
+    setLoading(true);
+    setCurrentStep(0);
+    setLoadingProgress([]);
+    setHackingOutput([]);
+    setArtifactData(null);
 
+    // Get a random mock artifact for the initial text content
+    const randomArtifact = mockArtifacts[Math.floor(Math.random() * mockArtifacts.length)];
+    
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      // Check if API key is available
+      const apiKey = config.openaiApiKey?.trim();
+      console.log('API Key status:', apiKey ? 'Present' : 'Missing');
+      
+      if (!apiKey) {
+        console.error('OpenAI API key is missing');
+        throw new Error('API key not found');
+      }
+
+      // Log the request details (excluding the full API key)
+      console.log('Making OpenAI API request with:', {
+        url: 'https://api.openai.com/v1/images/generations',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey.substring(0, 10)}...`
+        }
+      });
+
+      // Generate image using OpenAI during the loading sequence
+      const response = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-          model: 'gpt-4',
-          messages,
-          max_tokens: maxTokens
-        })
-      });
-
-      if (!response.ok) {
-        const errorData = await response.text();
-        console.error('OpenAI API Error:', {
-          status: response.status,
-          statusText: response.statusText,
-          error: errorData
-        });
-        throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
-      }
-
-      const data: ChatResponse = await response.json();
-      return data.choices[0]?.message?.content || '';
-    } catch (error) {
-      console.error('Request error:', error);
-      throw error;
-    }
-  };
-
-  const generateImage = async (prompt: string) => {
-    try {
-      if (!config.openaiApiKey) {
-        throw new Error('OpenAI API key is not configured');
-      }
-
-      const response = await fetch('https://api.openai.com/v1/images/generations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${config.openaiApiKey}`
-        },
-        body: JSON.stringify({
           model: "dall-e-3",
-          prompt: `Create a single floating object in the style of Rick and Morty: ${prompt}. The image must be a simple cartoon illustration with clean outlines and minimal shading, showing ONLY the object itself with absolutely NO text, NO numbers, NO symbols, NO writing, NO labels, NO letters, NO characters, NO logos, NO signatures, and NO markings of any kind. The object should be centered on a simple or transparent background. The style should be flat, cartoon-like, and simplified like Rick and Morty's art style, avoiding any photorealism or complex details. IMPORTANT: The image must be completely free of ANY form of text or text-like elements.`,
+          prompt: `Create a Rick and Morty style illustration of ${randomArtifact.prediction}. Make it look interdimensional and sci-fi, with a glowing quantum effect.`,
           n: 1,
           size: "1024x1024",
-          quality: "standard",
-          style: "vivid",
-          response_format: "url"
+          quality: "standard"
         })
       });
 
@@ -803,20 +822,33 @@ export const InteractiveFeatures: React.FC = () => {
         console.error('OpenAI API Error:', {
           status: response.status,
           statusText: response.statusText,
-          error: errorData
+          error: errorData,
+          headers: Object.fromEntries(response.headers.entries()),
+          key_type: apiKey.startsWith('sk-') ? 'Starts with sk-' : 'Invalid format'
         });
-        throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
 
-      const data = await response.json();
-      if (!data.data?.[0]?.url) {
-        throw new Error('Invalid response format from OpenAI API');
+      const imageData = await response.json();
+      console.log('OpenAI Response:', imageData);
+      
+      if (!imageData.data?.[0]?.url) {
+        throw new Error('No image URL in response');
       }
 
-      return data.data[0].url;
+      // Store the generated artifact
+      setPreGeneratedArtifact({
+        ...randomArtifact,
+        imageUrl: imageData.data[0].url
+      });
+
     } catch (error) {
       console.error('Error generating image:', error);
-      throw error;
+      // Use fallback image if generation fails
+      setPreGeneratedArtifact({
+        ...randomArtifact,
+        imageUrl: "/static.gif"
+      });
     }
   };
 
@@ -824,116 +856,45 @@ export const InteractiveFeatures: React.FC = () => {
     console.log('generateArtifact called');
     setIsGenerating(false);
     
-    try {
-      // Start generating artifact immediately and wait for it
-      const data = await generateArtifactData();
-      console.log('Artifact data generated:', data);
-      setPreGeneratedArtifact(data);
-      
-      setAwaitingUserChoice({
-        prompt: "WARNING: Accessing interdimensional data requires quantum stabilization. Proceed? (Y/N)",
-        callback: async (choice) => {
-          if (choice) {
-            setHackingOutput(prev => [
-              ...prev,
-              `<span style="color: ${TerminalColors.success}">[SYSTEM] Quantum stabilization initiated...</span>`
-            ]);
+    setAwaitingUserChoice({
+      prompt: "WARNING: Accessing interdimensional data requires quantum stabilization. Proceed? (Y/N)",
+      callback: async (choice) => {
+        if (choice) {
+          setHackingOutput(prev => [
+            ...prev,
+            `<span style="color: ${TerminalColors.success}">[SYSTEM] Quantum stabilization initiated...</span>`
+          ]);
+          
+          setIsGenerating(true);
+          
+          setTimeout(() => {
+            setIsGenerating(false);
             
-            setIsGenerating(true);
-            
-            setTimeout(() => {
-              setIsGenerating(false);
-              
-              setAwaitingUserChoice({
-                prompt: "ALERT: Dimensional breach detected. Override safety protocols? (Y/N)",
-                callback: async (choice) => {
-                  if (choice) {
-                    setHackingOutput(prev => [
-                      ...prev,
-                      `<span style="color: ${TerminalColors.warning}">[SYSTEM] Safety protocols bypassed. Initiating cipher lock...</span>`
-                    ]);
-                    
-                    setIsGenerating(true);
-                    
-                    setTimeout(() => {
-                      startPasswordChallenge();
-                    }, 1500);
-                  } else {
-                    terminateSession();
-                  }
+            setAwaitingUserChoice({
+              prompt: "ALERT: Dimensional breach detected. Override safety protocols? (Y/N)",
+              callback: async (choice) => {
+                if (choice) {
+                  setHackingOutput(prev => [
+                    ...prev,
+                    `<span style="color: ${TerminalColors.warning}">[SYSTEM] Safety protocols bypassed. Initiating cipher lock...</span>`
+                  ]);
+                  
+                  setIsGenerating(true);
+                  
+                  setTimeout(() => {
+                    startPasswordChallenge();
+                  }, 1500);
+                } else {
+                  terminateSession();
                 }
-              });
-            }, 2000);
-          } else {
-            terminateSession();
-          }
+              }
+            });
+          }, 2000);
+        } else {
+          terminateSession();
         }
-      });
-    } catch (error: any) {
-      console.error('Error in generateArtifact:', error);
-      const errorMessage = error.message || 'Unknown error occurred';
-      setHackingOutput(prev => [
-        ...prev,
-        `<span style="color: ${TerminalColors.error}">[ERROR] Failed to generate artifact: ${errorMessage}</span>`
-      ]);
-    }
-  };
-
-  const generateArtifactData = async () => {
-    console.log('Starting generateArtifactData...');
-    try {
-      // Generate prediction and survival tip
-      const predictionPrompt = 'Generate a funny Rick and Morty style interdimensional artifact description. Make it sound like a bizarre but useful invention. Keep it under 100 words.';
-      const survivalPrompt = 'Generate a humorous safety tip for handling this interdimensional artifact in the style of Rick and Morty. Keep it under 50 words.';
-
-      const [prediction, survivalTip] = await Promise.all([
-        makeOpenAIRequest([{ role: 'user', content: predictionPrompt }], 150),
-        makeOpenAIRequest([{ role: 'user', content: survivalPrompt }], 100)
-      ]);
-
-      setHackingOutput(prev => [
-        ...prev,
-        `<span style="color: ${TerminalColors.success}">[SUCCESS] Artifact data retrieved from quantum database</span>`,
-        `<span style="color: ${TerminalColors.info}">[PROCESS] Generating visual manifestation...</span>`
-      ]);
-
-      // Generate image based on the prediction
-      const imageUrl = await generateImage(prediction);
-
-      return {
-        prediction,
-        survivalTip,
-        imageUrl
-      };
-    } catch (error: any) {
-      console.error('Error in generateArtifactData:', error);
-      
-      let errorMessage = 'Unknown error occurred';
-      if (error.message.includes('API key')) {
-        errorMessage = 'OpenAI API key not configured properly';
-        setHackingOutput(prev => [
-          ...prev,
-          `<span style="color: ${TerminalColors.error}">[FATAL] Authentication failed: Invalid quantum key signature</span>`,
-          `<span style="color: ${TerminalColors.error}">[SYSTEM] Please verify your quantum authentication credentials</span>`
-        ]);
-      } else if (error.message.includes('429')) {
-        errorMessage = 'Rate limit exceeded';
-        setHackingOutput(prev => [
-          ...prev,
-          `<span style="color: ${TerminalColors.error}">[FATAL] Quantum bandwidth exceeded</span>`,
-          `<span style="color: ${TerminalColors.error}">[SYSTEM] Dimensional traffic congestion detected. Please try again later.</span>`
-        ]);
-      } else {
-        setHackingOutput(prev => [
-          ...prev,
-          `<span style="color: ${TerminalColors.error}">[FATAL] Quantum matrix destabilized: ${error.message}</span>`,
-          `<span style="color: ${TerminalColors.error}">[SYSTEM] Emergency shutdown initiated</span>`
-        ]);
       }
-      
-      terminateSession();
-      throw new Error(errorMessage);
-    }
+    });
   };
 
   const terminateSession = () => {
@@ -967,6 +928,7 @@ export const InteractiveFeatures: React.FC = () => {
     if (preGeneratedArtifact) {
       console.log('Setting artifactData...');
       setArtifactData(preGeneratedArtifact);
+      setUsingFallbackImage(false); // Reset fallback state
       
       console.log('Updating terminal output...');
       setHackingOutput(prev => [
@@ -984,15 +946,6 @@ export const InteractiveFeatures: React.FC = () => {
         `<span style="color: ${TerminalColors.error}">[ERROR] Failed to materialize artifact. Quantum signature corrupted.</span>`
       ]);
     }
-  };
-
-  const startGeneration = () => {
-    setSessionActive(true);
-    setLoading(true);
-    setCurrentStep(0);
-    setLoadingProgress([]);
-    setHackingOutput([]);
-    setArtifactData(null);
   };
 
   const renderPackageStatus = (pkg: PackageState) => {
@@ -1171,6 +1124,15 @@ export const InteractiveFeatures: React.FC = () => {
     console.log('preGeneratedArtifact changed:', preGeneratedArtifact);
   }, [preGeneratedArtifact]);
 
+  const renderLoadingGrid = () => (
+    <LoadingGrid>
+      <GridCell>ADDR: 0x{generateRandomHex()}</GridCell>
+      <GridCell>MEM: {Math.floor(Math.random() * 1024)}MB</GridCell>
+      <GridCell>CPU: {Math.floor(Math.random() * 100)}%</GridCell>
+      <GridCell>QBits: {Math.floor(Math.random() * 64)}</GridCell>
+    </LoadingGrid>
+  );
+
   return (
     <Section>
       <FeaturesContainer>
@@ -1187,7 +1149,15 @@ export const InteractiveFeatures: React.FC = () => {
                 </ProgressText>
               )}
               {loadingProgress.map((step, index) => (
-                <ProgressText key={`progress-${index}`}>{step}</ProgressText>
+                <React.Fragment key={`progress-${index}`}>
+                  <ProgressText>
+                    {step.includes('<div class="loading-grid">') ? (
+                      renderLoadingGrid()
+                    ) : (
+                      <div dangerouslySetInnerHTML={{ __html: step }} />
+                    )}
+                  </ProgressText>
+                </React.Fragment>
               ))}
               {isGenerating && (
                 <>
@@ -1265,7 +1235,20 @@ export const InteractiveFeatures: React.FC = () => {
                 [ANALYSIS] {artifactData.prediction}
               </ArtifactText>
               {artifactData.imageUrl && (
-                <ArtifactImage src={artifactData.imageUrl} alt="Quantum Artifact" />
+                <ArtifactImage 
+                  src={usingFallbackImage ? "/static.gif" : artifactData.imageUrl} 
+                  alt="Quantum Artifact"
+                  onError={(e) => {
+                    if (!usingFallbackImage) {
+                      console.error('Image failed to load, using fallback');
+                      setUsingFallbackImage(true);
+                      setHackingOutput(prev => [
+                        ...prev,
+                        `<span style="color: ${TerminalColors.warning}">[WARNING] Quantum visualization unstable. Using backup image.</span>`
+                      ]);
+                    }
+                  }}
+                />
               )}
               <ArtifactText className="warning">
                 [WARNING] Interdimensional Safety Protocol Required
