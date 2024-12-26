@@ -1,152 +1,66 @@
-# SquanchCoin Text Effect Component
+# Squanch Coin
 
-## BlotterText Component Documentation
+An interdimensional cryptocurrency portal powered by quantum computing and Rick and Morty-style innovation.
 
-The `BlotterText` component is a custom React component that creates a liquid-like distortion effect on text using Three.js and WebGL shaders. This component replaces the original Blotter.js implementation with a more performant and stable solution.
+## Features
 
-### Key Features
-- Liquid distortion effect on hover
-- Responsive to mouse movement
-- Fallback to regular text when WebGL is not available
-- Support for headers and regular text
-- Automatic text sizing and scaling
-- High-performance WebGL rendering
+- Interactive quantum portal with dynamic TV static effect
+- Terminal-style interface with realistic hacking simulation
+- AI-powered artifact generation using OpenAI's GPT-4 and DALL-E 3
+- Responsive design for all devices
+- Immersive user experience with dynamic loading sequences
 
-### Usage
+## Getting Started
 
-```tsx
-// For main header (full viewport height)
-<BlotterText 
-  text="Your Text" 
-  isHeader={true} 
-  fill="#ffffff" 
-/>
+### Prerequisites
 
-// For regular section headers
-<BlotterText 
-  text="Section Header" 
-  fill="#ffffff" 
-/>
+- Node.js (v14 or higher)
+- npm or yarn
+- OpenAI API key
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/ryanjbrant/squanchcoinio.git
+cd squanchcoinio
 ```
 
-### Props
+2. Install dependencies:
+```bash
+npm install
+```
 
-- `text` (required): The text to display
-- `isHeader` (optional): Set to true for full viewport height headers
-- `fill` (optional): Text color (supports hex and rgb/rgba)
-- `size` (optional): Base font size (default: 100)
-- `className` (optional): Additional CSS classes
+3. Create a `.env` file in the root directory and add your OpenAI API key:
+```
+REACT_APP_OPENAI_API_KEY=your_api_key_here
+```
 
-### ⚠️ IMPORTANT: DO NOT MODIFY
+4. Start the development server:
+```bash
+npm start
+```
 
-The following parts of the component should NEVER be modified as they are critical for stability:
+The application will be available at `http://localhost:3000`.
 
-1. Texture Initialization:
-   ```typescript
-   texture.minFilter = THREE.LinearFilter;
-   texture.magFilter = THREE.LinearFilter;
-   texture.format = THREE.RGBAFormat;
-   texture.type = THREE.UnsignedByteType;
-   ```
+## Technology Stack
 
-2. Canvas Power-of-Two Dimensions:
-   ```typescript
-   const textureWidth = Math.pow(2, Math.ceil(Math.log2(Math.min(2048, initialWidth))));
-   ```
+- React
+- TypeScript
+- Styled Components
+- OpenAI API (GPT-4 & DALL-E 3)
+- WebGL Shaders
 
-3. WebGL Context Management:
-   ```typescript
-   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-   ```
+## Contributing
 
-4. Resource Cleanup in useEffect:
-   ```typescript
-   return () => {
-     // ... cleanup code
-     renderer.dispose();
-     geometry.dispose();
-     material.dispose();
-     texture.dispose();
-   };
-   ```
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-### Common Issues to Avoid
+## License
 
-1. **Memory Leaks**
-   - Always ensure the component unmounts properly
-   - Never remove the cleanup function in useEffect
-   - Don't create new WebGL contexts without disposing of old ones
+[MIT](https://choosealicense.com/licenses/mit/)
 
-2. **Performance Issues**
-   - Don't increase the texture size beyond 2048px
-   - Don't modify the pixel ratio limit
-   - Don't remove the animation frame cancellation
+## Acknowledgments
 
-3. **Texture Problems**
-   - Don't change the texture format from RGBA
-   - Don't modify the power-of-two texture dimensions
-   - Don't remove the black background for text rendering
-
-4. **Shader Issues**
-   - Don't modify the UV clamping in the fragment shader
-   - Don't change the alpha channel handling
-   - Keep the distortion parameters within safe ranges
-
-### Technical Details
-
-The component uses several techniques to ensure stability:
-
-1. **Texture Management**
-   - Uses power-of-two dimensions for WebGL compatibility
-   - Properly handles texture disposal
-   - Uses linear filtering for smooth rendering
-
-2. **WebGL Context**
-   - Handles context loss and restoration
-   - Limits pixel ratio for performance
-   - Uses proper context attributes for stability
-
-3. **Memory Management**
-   - Disposes of all Three.js resources
-   - Cleans up event listeners
-   - Handles component unmounting
-
-4. **Error Handling**
-   - Provides fallback for WebGL errors
-   - Handles color parsing errors
-   - Manages texture creation failures
-
-### Browser Support
-
-- Requires WebGL support
-- Falls back gracefully when WebGL is not available
-- Tested on modern browsers (Chrome, Firefox, Safari, Edge)
-
-### Performance Considerations
-
-1. **Texture Size**
-   - Maximum texture size: 2048px
-   - Minimum texture size: 256px
-   - Automatically scales based on container
-
-2. **Animation**
-   - Uses requestAnimationFrame for smooth animation
-   - Limits distortion calculations to visible area
-   - Optimizes shader calculations
-
-3. **Memory**
-   - Properly disposes of WebGL resources
-   - Manages texture memory efficiently
-   - Cleans up event listeners
-
-### Troubleshooting
-
-If you encounter issues:
-
-1. Check WebGL support in the browser
-2. Verify container dimensions are non-zero
-3. Ensure proper cleanup on unmount
-4. Check for memory leaks with React DevTools
-5. Verify color format compatibility
-
-Remember: This component is carefully tuned for performance and stability. Any modifications to the core rendering logic may cause instability or memory leaks. 
+- Rick and Morty for inspiration
+- OpenAI for AI capabilities
+- The quantum realm for its mysteries 
