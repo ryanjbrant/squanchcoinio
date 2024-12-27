@@ -10,53 +10,118 @@ An interdimensional cryptocurrency portal powered by quantum computing and Rick 
 - Responsive design for all devices
 - Immersive user experience with dynamic loading sequences
 
-## Terminal Functionality
+## OpenAI Integration
 
-The quantum terminal is a sophisticated interface that simulates interdimensional artifact generation:
+The project uses OpenAI's DALL-E 3 API for generating unique interdimensional artifacts. Here's how it works:
 
-- **Initialization**: Press 'Y' to start the quantum sequence
-- **Loading Phases**: Multiple stages of quantum stabilization and dimensional scanning
-- **Safety Protocols**: Two-step verification process requiring user confirmation
-- **Password Challenge**: Memory dump analysis requiring hex code identification
-- **Artifact Generation**: Automated process combining quantum data with AI visualization
+### API Configuration
+
+```bash
+REACT_APP_OPENAI_API_KEY=sk-proj-mot0r...  # Your OpenAI project key
+```
+
+### Generation Process
+
+1. **Initialization**
+   - The system loads the OpenAI project key from environment variables
+   - Validates key presence before making API calls
+   - Configures proper headers with Bearer authentication
+
+2. **API Call Structure**
+   ```typescript
+   const response = await fetch('https://api.openai.com/v1/images/generations', {
+     method: 'POST',
+     headers: {
+       'Content-Type': 'application/json',
+       'Authorization': `Bearer ${apiKey}`
+     },
+     body: JSON.stringify({
+       model: "dall-e-3",
+       prompt: "Rick and Morty style illustration...",
+       n: 1,
+       size: "1024x1024",
+       quality: "standard"
+     })
+   });
+   ```
+
+3. **Error Handling**
+   - Validates API responses with detailed error logging
+   - Implements fallback to static GIF if generation fails
+   - Maintains quantum stability during API communication
+
+4. **Image Processing**
+   - Receives generated image URL from OpenAI
+   - Handles image loading with error boundaries
+   - Implements fallback mechanisms for failed loads
 
 ### Important Notes
 
-- Do not interrupt the terminal during quantum stabilization phases
-- Allow all loading sequences to complete naturally
-- Password attempts are limited to prevent dimensional instability
-- Memory dumps contain critical hex codes - analyze carefully
+- Use project key format (sk-proj-...) for API authentication
+- Don't modify the key format or structure
+- Ensure proper environment variable loading
+- Restart development server after key changes
 
-## Artifact Generation
+## Artifact Generation Flow
 
-Artifacts are generated through a combination of quantum computing and AI:
+1. **Initialization Phase**
+   - User triggers generation with 'Y' key
+   - System validates API configuration
+   - Establishes quantum connection
 
-1. **Quantum Seed**: Initial data generation through dimensional scanning
-2. **AI Processing**: OpenAI DALL-E 3 visualization of quantum data
-3. **Safety Protocols**: Automated checks for dimensional stability
-4. **Fallback System**: Static backup in case of quantum destabilization
+2. **Generation Phase**
+   - Sends prompt to DALL-E 3
+   - Processes API response
+   - Stabilizes quantum data
 
-### Critical Information
+3. **Display Phase**
+   - Loads generated image
+   - Displays artifact details
+   - Shows safety protocols
 
-- Each artifact is unique across all dimensions
-- Generated images are automatically stabilized
-- Survival tips are crucial for artifact handling
-- Quantum signatures are non-repeatable
+4. **Error Recovery**
+   - Automatic fallback to static GIF
+   - Maintains terminal stability
+   - Preserves user session
 
-## API Configuration
+## Terminal Integration
 
-The project uses OpenAI's API for artifact visualization. The current project key format is correct and working:
+The terminal interface is tightly integrated with the OpenAI generation process:
 
-```bash
-REACT_APP_OPENAI_API_KEY=sk-proj-*****
-```
+1. **Pre-Generation**
+   - Displays loading sequences
+   - Shows quantum stabilization
+   - Prepares API connection
 
-### Important API Notes
+2. **During Generation**
+   - Real-time progress updates
+   - Package installation simulation
+   - Error monitoring
 
-- Do NOT change the API key format - project keys are required
-- Keep quantum stabilization active during API calls
-- Maintain proper environment variable configuration
-- Restart the development server after any API changes
+3. **Post-Generation**
+   - Image materialization
+   - Safety protocol display
+   - Session management
+
+## Troubleshooting
+
+### API Issues
+- Verify project key format (sk-proj-...)
+- Check environment variable loading
+- Confirm server restart after changes
+- Monitor console for detailed error logs
+
+### Generation Issues
+- Check quantum stabilization status
+- Verify API response format
+- Monitor image loading process
+- Check fallback mechanism
+
+### Common Error Codes
+- 401: Authentication issue
+- 429: Rate limit exceeded
+- 500: Server-side error
+- 400: Invalid request format
 
 ## Getting Started
 
@@ -98,13 +163,6 @@ The application will be available at `http://localhost:3000`.
 - Styled Components
 - OpenAI API (GPT-4 & DALL-E 3)
 - WebGL Shaders
-
-## Troubleshooting
-
-- If artifacts fail to generate, check quantum stabilization status
-- For API errors, verify project key format
-- If terminal freezes, allow safety protocols to complete
-- Memory dumps should always contain valid hex codes
 
 ## Contributing
 

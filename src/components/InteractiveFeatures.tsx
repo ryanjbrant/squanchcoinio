@@ -783,7 +783,7 @@ export const InteractiveFeatures: React.FC = () => {
     
     try {
       // Check if API key is available
-      const apiKey = config.openaiApiKey?.trim();
+      const apiKey = config.openaiApiKey;
       console.log('API Key status:', apiKey ? 'Present' : 'Missing');
       
       if (!apiKey) {
@@ -797,7 +797,7 @@ export const InteractiveFeatures: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey.substring(0, 10)}...`
+          'Authorization': `Bearer ${apiKey}`
         }
       });
 
@@ -810,7 +810,7 @@ export const InteractiveFeatures: React.FC = () => {
         },
         body: JSON.stringify({
           model: "dall-e-3",
-          prompt: `Create a Rick and Morty style illustration of ${randomArtifact.prediction}. Make it look interdimensional and sci-fi, with a glowing quantum effect.`,
+          prompt: `Create a textless cartoon illustration of ${randomArtifact.prediction}. Make it a clearly defined illustration on a solid vibrant color background. Do not add a lot of detail, keep the illustration simple and make it reflect the style of rick and morty. The final artwork should feel like its an artifact from a Rick and Morty universe.`,
           n: 1,
           size: "1024x1024",
           quality: "standard"
@@ -823,8 +823,7 @@ export const InteractiveFeatures: React.FC = () => {
           status: response.status,
           statusText: response.statusText,
           error: errorData,
-          headers: Object.fromEntries(response.headers.entries()),
-          key_type: apiKey.startsWith('sk-') ? 'Starts with sk-' : 'Invalid format'
+          headers: Object.fromEntries(response.headers.entries())
         });
         throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
