@@ -584,6 +584,70 @@ const BrailleLoader = styled.span`
   opacity: 0.8;
 `;
 
+const generateRandomArtifact = () => {
+  const adjectives = [
+    'Quantum', 'Interdimensional', 'Reality-Bending', 'Time-Warping', 'Dimensional',
+    'Multiverse', 'Probability', 'Entropy', 'Paradox', 'Cosmic', 'Neural',
+    'Temporal', 'Void', 'Plasma', 'Quantum-Entangled'
+  ];
+  
+  const objects = [
+    'Device', 'Tool', 'Gadget', 'Machine', 'Artifact', 'Manipulator',
+    'Generator', 'Converter', 'Synthesizer', 'Portal', 'Interface',
+    'Matrix', 'Core', 'Engine', 'Accelerator', 'Toaster', 'Blender',
+    'Spatula', 'Coffee Maker', 'Microwave', 'Can Opener', 'Waffle Iron',
+    'Food Processor', 'Juicer', 'Egg Timer', 'Dishwasher', 'Refrigerator',
+    'Slow Cooker', 'Mixer', 'Pressure Cooker', 'Lawn Mower', 'Weed Whacker',
+    'Hedge Trimmer', 'Leaf Blower', 'Garden Hose', 'Sprinkler', 'Rake',
+    'Shovel', 'Wheelbarrow', 'Pruning Shears', 'Hair Dryer', 'Curling Iron',
+    'Straightener', 'Electric Razor', 'Facial Steamer', 'Massage Wand',
+    'Epilator', 'Makeup Mirror', 'Nail Buffer', 'Eyelash Curler'
+  ];
+  
+  const effects = [
+    'manipulates reality', 'bends time', 'alters probability', 'crosses dimensions',
+    'rewrites physics', 'merges timelines', 'stabilizes quantum fields',
+    'generates parallel realities', 'manipulates entropy', 'bridges universes',
+    'warps spacetime', 'synthesizes realities', 'processes quantum data',
+    'manipulates cosmic forces', 'bends dimensional barriers'
+  ];
+  
+  const warnings = [
+    'may cause temporal anomalies', 'could create parallel timelines',
+    'might bend reality', 'risks quantum entanglement', 'may fragment spacetime',
+    'could duplicate reality', 'might create temporal paradoxes',
+    'risks dimensional collapse', 'may alter probability matrices',
+    'could destabilize local reality', 'might merge parallel universes'
+  ];
+
+  const consequences = [
+    'glitching', 'fracturing', 'collapsing', 'duplicating', 'merging',
+    'destabilizing', 'fragmenting', 'warping', 'phasing', 'quantum-shifting'
+  ];
+
+  const safetyMeasures = [
+    'quantum stabilizers', 'temporal anchors', 'reality buffers',
+    'dimensional dampeners', 'entropy regulators', 'probability shields',
+    'paradox inhibitors', 'void barriers', 'cosmic filters'
+  ];
+
+  const getRandomItem = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+  const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+  
+  const adj1 = getRandomItem(adjectives);
+  const adj2 = getRandomItem(adjectives.filter(a => a !== adj1));
+  const obj = getRandomItem(objects);
+  const effect = getRandomItem(effects);
+  const warning = getRandomItem(warnings);
+  const consequence = getRandomItem(consequences);
+  const safety = getRandomItem(safetyMeasures);
+  
+  const prediction = `The ${adj1} ${obj}: A ${adj2.toLowerCase()} device that ${effect}. Warning: ${capitalize(warning)}.`;
+  const survivalTip = `Keep ${safety} nearby. If reality starts ${consequence}, activate emergency protocols immediately.`;
+  
+  return { prediction, survivalTip };
+};
+
 export const InteractiveFeatures: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -778,11 +842,10 @@ export const InteractiveFeatures: React.FC = () => {
     setHackingOutput([]);
     setArtifactData(null);
 
-    // Get a random mock artifact for the initial text content
-    const randomArtifact = mockArtifacts[Math.floor(Math.random() * mockArtifacts.length)];
+    // Generate unique artifact text
+    const randomArtifact = generateRandomArtifact();
     
     try {
-      // Check if API key is available
       const apiKey = config.openaiApiKey;
       console.log('API Key status:', apiKey ? 'Present' : 'Missing');
       
@@ -791,17 +854,11 @@ export const InteractiveFeatures: React.FC = () => {
         throw new Error('API key not found');
       }
 
-      // Log the request details (excluding the full API key)
-      console.log('Making OpenAI API request with:', {
-        url: 'https://api.openai.com/v1/images/generations',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        }
-      });
+      const prompt = `Create an image of a ${randomArtifact.prediction} on a solid vibrant color background with no text. 
+      The style should be similar to Rick and Morty - simple, bold, and sci-fi themed. 
+      Focus on creating a singular, iconic object that represents the device described. 
+      Use vibrant colors and clean lines. No text or labels. The background should be solid and there should be not text visible and the shape should be clear and recognizable. Do not use 3D, no photorealism, no high edetail`;
 
-      // Generate image using OpenAI during the loading sequence
       const response = await fetch('https://api.openai.com/v1/images/generations', {
         method: 'POST',
         headers: {
@@ -810,7 +867,7 @@ export const InteractiveFeatures: React.FC = () => {
         },
         body: JSON.stringify({
           model: "dall-e-3",
-          prompt: `Create a textless cartoon illustration of ${randomArtifact.prediction}. Make it a clearly defined illustration on a solid vibrant color background. Do not add a lot of detail, keep the illustration simple and make it reflect the style of rick and morty. The final artwork should feel like its an artifact from a Rick and Morty universe.`,
+          prompt,
           n: 1,
           size: "1024x1024",
           quality: "standard"
@@ -818,24 +875,29 @@ export const InteractiveFeatures: React.FC = () => {
       });
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => null);
+        const errorData = await response.json().catch(() => ({ error: { message: 'Unknown error' } }));
         console.error('OpenAI API Error:', {
           status: response.status,
           statusText: response.statusText,
-          error: errorData,
-          headers: Object.fromEntries(response.headers.entries())
+          error: errorData
         });
+        
+        setHackingOutput(prev => [
+          ...prev,
+          `<span style="color: ${TerminalColors.error}">[ERROR] Quantum visualization failed: ${errorData.error?.message || 'Unknown error'}</span>`,
+          `<span style="color: ${TerminalColors.warning}">[SYSTEM] Falling back to emergency visualization protocols...</span>`
+        ]);
+        
         throw new Error(`API Error: ${response.status} ${response.statusText}`);
       }
 
       const imageData = await response.json();
-      console.log('OpenAI Response:', imageData);
       
       if (!imageData.data?.[0]?.url) {
         throw new Error('No image URL in response');
       }
 
-      // Store the generated artifact
+      // Store the generated artifact with both new text and image
       setPreGeneratedArtifact({
         ...randomArtifact,
         imageUrl: imageData.data[0].url
@@ -843,11 +905,17 @@ export const InteractiveFeatures: React.FC = () => {
 
     } catch (error) {
       console.error('Error generating image:', error);
-      // Use fallback image if generation fails
+      // Use fallback image but keep the unique generated text
       setPreGeneratedArtifact({
         ...randomArtifact,
         imageUrl: "/static.gif"
       });
+      
+      setHackingOutput(prev => [
+        ...prev,
+        `<span style="color: ${TerminalColors.error}">[ERROR] Quantum visualization system malfunction</span>`,
+        `<span style="color: ${TerminalColors.warning}">[SYSTEM] Engaging backup visualization matrix...</span>`
+      ]);
     }
   };
 
